@@ -9,12 +9,10 @@ int main(int argc, char const *argv[])
         { //FIGLIO
 
             printf("Io sono %d figlio %d-esimo di %d, il principe dei Nani\n", getpid(), i, getppid());
-        }
-        else
-        { //PADRE
-            printf("Io sono %d padre di %d e figlio di %d, il re sotto la Montagna\n", getpid(), p, getppid());
+            exit(0);
         }
     }
+    printf("Io sono %d padre di %d e figlio di %d, il re sotto la Montagna\n", getpid(), p, getppid());
     printf("FINITO!\n");
     return (0);
 }
