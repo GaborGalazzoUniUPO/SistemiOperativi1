@@ -7,16 +7,16 @@ EXECS=fork
 
 all: $(EXECS)
 
-fork: fork.o xerrori.o
+fork: fork.o ../shared/xerrori.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 # regola generale per i file oggetto
-%.o: %.c xerrori.h
+%.o: %.c ../shared/xerrori.h
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 # utile per il docente per creare un archvio da mettere su DIR 
 tarfile:
-	tar -zcf lezione.tgz makefile *.c *.h
+	tar -zcf lezione.tgz makefile *.c *.h ../shared/*
 
 # per quando si vuole ricominciare da zero 
 clean:
