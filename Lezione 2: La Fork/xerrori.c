@@ -18,6 +18,14 @@ pid_t xfork(const char *file, const int line){
   return  p;
 }
 
+pid_t xwait(int *status, const char *file, const int line){
+  pid_t p = wait(status);
+  if(p<0){
+    die("ERRORE WAIT", file, line);
+  }
+  return p;
+}
+
 void die(const char *s, const char *file, const int line){
   perror(s);
   fprintf(stderr, "(%s,%d)\n", file, line);

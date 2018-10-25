@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <wait.h>
 
 // prototipi di xerrori.c
 
@@ -16,3 +17,5 @@ FILE *xfopen(const char *pathname, const char *mode, const char *file, const int
 void die(const char *s, const char *file, const int line);
 
 pid_t xfork(const char *file, const int line);
+
+pid_t xwait(int* status, const char* file, const int line);
