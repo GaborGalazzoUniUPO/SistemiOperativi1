@@ -10,14 +10,19 @@ int main(int argc, char const *argv[])
         { //FIGLIO
 
             printf("Io sono %d figlio %d-esimo di %d, il principe dei Nani\n", getpid(), i, getppid());
-            exit(0);
+            exit(7);
         }
     }
     printf("Io sono %d figlio di %d, il re sotto la Montagna\n", getpid(), getppid());
     for (int i = 0; i < n; i++)
     {
-        pid_t p = xwait(NULL, __FILE__, __LINE__);
+        int status;
+        pid_t p = xwait(&status, __FILE__, __LINE__);
         printf("E' terminato il figlio %d\n", p);
+        if (WIFEXITED(status) >= 0)
+        {
+            printf("Exit status del figlio: %d\n", WIFEXITED(status));
+        }
     }
 
     printf("FINITO!\n");
