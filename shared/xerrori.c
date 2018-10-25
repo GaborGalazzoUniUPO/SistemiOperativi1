@@ -43,6 +43,31 @@ size_t xfread(void *ptr, size_t size, size_t nmemb, FILE *stream, const char *fi
   return e;
 }
 
+int xfseek(FILE *stream, long offset, int whence, const char *file, const int linea){
+  int e = fseek(stream, offset, whence);
+  if(e!=0){
+    die("Errore fseek", file, linea);
+  }
+  return e;
+}
+
+long xftell(FILE *stream, const char *file, const int linea){
+  int e = ftell(stream);
+  if (e < 0)
+  {
+    die("Errore ftell", file, linea);
+  }
+  return e;
+}
+
+long xfdim(FILE *stream, const char *file, const int linea){
+  long old = xftell(stream, file, linea);
+  xfseek(stream, 0, SEEK_END, file, linea);
+  long size = xftell(stream, file, linea);
+  xfseek(stream, old, SEEK_SET, file, linea);
+  return size;
+}
+
 pid_t xfork(const char *file, const int line)
 {
   pid_t p = fork();

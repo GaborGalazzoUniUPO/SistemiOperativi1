@@ -12,13 +12,23 @@
 
 // prototipi di xerrori.c
 
+/*************************************************************************************************/
+
 FILE *xfopen(const char *pathname, const char *mode, const char *file, const int line);
+
+int xfclose(FILE *stream, const char *file, const int linea);
 
 size_t xfwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream, const char *file, const int linea);
 
 size_t xfread(void *ptr, size_t size, size_t nmemb, FILE *stream, const char *file, const int linea);
 
-int xfclose(FILE *stream, const char *file, const int linea);
+int xfseek(FILE *stream, long offset, int whence, const char *file, const int linea);
+
+long xftell(FILE *stream, const char *file, const int linea);
+
+long xfdim(FILE *stream, const char *file, const int linea);
+
+/*************************************************************************************************/
 
 void die(const char *s, const char *file, const int line);
 

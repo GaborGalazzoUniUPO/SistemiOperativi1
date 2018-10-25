@@ -3,11 +3,14 @@ CFLAGS=-Wall -O -g -std=c99
 CC=gcc
 
 # elenco eseguibili
-EXECS=scrivi scrivi_shared
+EXECS=scrivi scrivi_shared leggi
 
 all: $(EXECS)
 
 scrivi: scrivi.o ../shared/xerrori.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+leggi: leggi.o ../shared/xerrori.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 scrivi_shared: scrivi_shared.o ../shared/xerrori.o
