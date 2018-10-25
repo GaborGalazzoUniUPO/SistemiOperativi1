@@ -2,7 +2,7 @@
 
 int main(int argc, char const *argv[])
 {
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 100; i++)
     {
         pid_t p = xfork(__FILE__, __LINE__);
         if (p == 0)
@@ -12,7 +12,7 @@ int main(int argc, char const *argv[])
             exit(0);
         }
     }
-    printf("Io sono %d padre di %d e figlio di %d, il re sotto la Montagna\n", getpid(), p, getppid());
+    printf("Io sono %d figlio di %d, il re sotto la Montagna\n", getpid(), getppid());
     printf("FINITO!\n");
     return (0);
 }
