@@ -2,13 +2,15 @@
 *
 
 # Unignore all with extensions
-!*.*
+!*.c
+!*.h
+!*.md
 
-*.o
 
 # Unignore all dirs
 !*/
 
 # Unignore makefiles
 !*makefile
+
 *.vscode
