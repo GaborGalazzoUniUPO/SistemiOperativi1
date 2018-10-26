@@ -3,7 +3,7 @@ CFLAGS=-Wall -O -g -std=c99
 CC=gcc
 
 # elenco eseguibili
-EXECS=fork scrivisc
+EXECS=fork scrivisc leggisc
 
 all: $(EXECS)
 
@@ -11,6 +11,9 @@ fork: fork.o ../shared/xerrori.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 scrivisc: scrivisc.o ../shared/xerrori.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+leggisc: leggisc.o ../shared/xerrori.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 # regola generale per i file oggetto
