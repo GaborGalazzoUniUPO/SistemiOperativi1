@@ -3,7 +3,7 @@ CFLAGS=-Wall -O -g -std=c99
 CC=gcc
 
 # elenco eseguibili
-EXECS=fork scrivisc leggisc leggisc_smart
+EXECS=fork scrivisc leggisc leggisc_smart conta_primi2
 
 all: $(EXECS)
 
@@ -17,6 +17,9 @@ leggisc: leggisc.o ../shared/xerrori.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 leggisc_smart: leggisc_smart.o ../shared/xerrori.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+conta_primi2: conta_primi2.o ../shared/xerrori.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 # regola generale per i file oggetto
