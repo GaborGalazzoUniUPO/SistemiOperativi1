@@ -16,9 +16,11 @@ void print_trace(void)
 
 void _die(const char *s, const char *file, const int line)
 {
+  printf("\033[0;31m"); 
   perror(s);
-  print_trace();
   fprintf(stderr,"== %d == Linea: %d, File: %s\n",getpid(),line,file);
+  print_trace();
+  printf("\033[0m");
   exit(1);
 }
 
@@ -94,6 +96,18 @@ long _xfdim(FILE *stream, const char *file, const int linea)
   long size = _xftell(stream, file, linea);
   _xfseek(stream, old, SEEK_SET, file, linea);
   return size;
+}
+
+/**************************      SYSCALL     *****************************************************/
+
+int _xclose(int fd, const char *file, const int linea)
+{
+  int e = close(fd);
+  if (e < 0)
+  {
+    _die("Errore clode", file, linea);
+  }
+  return e;
 }
 
 /*************************************************************************************************/

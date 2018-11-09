@@ -13,6 +13,9 @@ contaprimipipe: contaprimipipe.o ../shared/xerrori.o
 contaprimifile: contaprimifile.o ../shared/xerrori.o
 	$(CC) $(CFLAGS) -o $@ $^
 
+dividiP: dividiP.o ../shared/xerrori.o
+	$(CC) $(CFLAGS) -o $@ $^
+
 
 # regola generale per i file oggetto
 %.o: %.c ../shared/xerrori.h

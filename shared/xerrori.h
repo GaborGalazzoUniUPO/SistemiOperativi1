@@ -19,6 +19,8 @@ void _die(const char *s, const char *file, const int line);
 
 #define die(s) _die(s, __FILE__,__LINE__)
 
+typedef char* String;
+
 /*************************************************************************************************/
 /**************************      FILES     *******************************************************/
 /*************************************************************************************************/
@@ -39,6 +41,12 @@ long _xfdim(FILE *stream, const char *file, const int linea);
 #define xftell(stream) _xftell(stream, __FILE__, __LINE__)
 #define xfdim(stream) _xfdim(stream, __FILE__, __LINE__)
 
+/***************** SYSCALL ***********************************************************************/
+
+int _xclose(int fd, const char *file, const int linea);
+
+#define xclose(fd) _xclose(fd, __FILE__,__LINE__)
+
 /*************************************************************************************************/
 /**************************      PROCESS     *****************************************************/
 /*************************************************************************************************/
@@ -50,3 +58,5 @@ int _xpipe(int pipefd[2], const char *file, const int line) ;
 #define xfork() _xfork(__FILE__, __LINE__)
 #define xwait(status) _xwait(status, __FILE__, __LINE__)
 #define xpipe(pipefd) _xpipe(pipefd, __FILE__,__LINE__)
+
+
