@@ -8,13 +8,13 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    FILE *fp = xfopen(argv[1], "r", __FILE__, __LINE__);
-    long bytes = xfdim(fp, __FILE__, __LINE__);
+    FILE *fp = xfopen(argv[1], "r");
+    long bytes = xfdim(fp);
 
     int to_read = bytes / sizeof(int);
     int numbers[to_read];
 
-    xfread(numbers, sizeof(int), to_read, fp, __FILE__, __LINE__);
+    xfread(numbers, sizeof(int), to_read, fp);
 
     int sum = 0;
     for (int i = 0; i < to_read; i++)

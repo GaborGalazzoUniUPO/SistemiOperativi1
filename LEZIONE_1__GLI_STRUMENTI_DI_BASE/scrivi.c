@@ -4,7 +4,7 @@
 void scrivi1n(int n, char *nome) 
 {
   // apre file in scrittura
-  FILE *f = xfopen(nome,"wb",__FILE__,__LINE__);
+  FILE *f = xfopen(nome,"wb");
   assert(f!=NULL);
   // scrive valori sul file
   for(int i=1;i<=n;i++) {

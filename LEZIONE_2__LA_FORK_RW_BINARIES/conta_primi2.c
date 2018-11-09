@@ -46,7 +46,7 @@ int conta_primi(int start, int end)
 
 void esercizio3(int n)
 {
-    pid_t pid = xfork(__FILE__, __LINE__);
+    pid_t pid = xfork();
     if (pid == 0)
     { //FIGLIO
         exit(conta_primi(n / 2 + 1, n));
@@ -56,7 +56,7 @@ void esercizio3(int n)
 
         int count = conta_primi(1, n / 2);
         int status;
-        xwait(&status, __FILE__, __LINE__);
+        xwait(&status);
         if (WIFEXITED(status) >= 0)
         {
             count += WEXITSTATUS(status);
@@ -64,7 +64,7 @@ void esercizio3(int n)
         }
         else
         {
-            die("FIGLIO MORTO MALE", __FILE__, __LINE__);
+            die("FIGLIO MORTO MALE");
         }
     }
 }

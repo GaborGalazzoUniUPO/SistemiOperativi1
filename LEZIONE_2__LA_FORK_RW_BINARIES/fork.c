@@ -5,7 +5,7 @@ int main(int argc, char const *argv[])
     int n = 3;
     for (int i = 0; i < n; i++)
     {
-        pid_t p = xfork(__FILE__, __LINE__);
+        pid_t p = xfork();
         if (p == 0)
         { //FIGLIO
 
@@ -17,7 +17,7 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < n; i++)
     {
         int status;
-        pid_t p = xwait(&status, __FILE__, __LINE__);
+        pid_t p = xwait(&status);
         printf("E' terminato il figlio %d\n", p);
         if (WIFEXITED(status) >= 0)
         {

@@ -9,35 +9,42 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <wait.h>
+#include <execinfo.h>
 
 /*************************************************************************************************/
 /**************************      UTILS     *******************************************************/
 /*************************************************************************************************/
 
-void die(const char *s, const char *file, const int line);
+void _die(const char *s, const char *file, const int line);
+
+#define die(s) _die(s, __FILE__,__LINE__)
 
 /*************************************************************************************************/
 /**************************      FILES     *******************************************************/
 /*************************************************************************************************/
 
-FILE *xfopen(const char *pathname, const char *mode, const char *file, const int line);
+FILE *_xfopen(const char *pathname, const char *mode, const char *file, const int line);
+int _xfclose(FILE *stream, const char *file, const int linea);
+size_t _xfwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream, const char *file, const int linea);
+size_t _xfread(void *ptr, size_t size, size_t nmemb, FILE *stream, const char *file, const int linea);
+int _xfseek(FILE *stream, long offset, int whence, const char *file, const int linea);
+long _xftell(FILE *stream, const char *file, const int linea);
+long _xfdim(FILE *stream, const char *file, const int linea);
 
-int xfclose(FILE *stream, const char *file, const int linea);
-
-size_t xfwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream, const char *file, const int linea);
-
-size_t xfread(void *ptr, size_t size, size_t nmemb, FILE *stream, const char *file, const int linea);
-
-int xfseek(FILE *stream, long offset, int whence, const char *file, const int linea);
-
-long xftell(FILE *stream, const char *file, const int linea);
-
-long xfdim(FILE *stream, const char *file, const int linea);
+#define xfopen(pathname, mode) _xfopen(pathname, mode, __FILE__, __LINE__)
+#define xfclose(stream) _xfclose(stream, __FILE__, __LINE__)
+#define xfwrite(ptr, size, nmemb, fp) _xfwrite(ptr, size, nmemb, fp, __FILE__, __LINE__)
+#define xfread(ptr, size, nmemb, fp) _xfread(ptr, size, nmemb, fp, __FILE__, __LINE__)
+#define xfseek(stream, offset, whence) _xfseek(stream, offset, nmemb, __FILE__, __LINE__)
+#define xftell(stream) _xftell(stream, __FILE__, __LINE__)
+#define xfdim(stream) _xfdim(stream, __FILE__, __LINE__)
 
 /*************************************************************************************************/
-/**************************      THREADS     *****************************************************/
+/**************************      PROCESS     *****************************************************/
 /*************************************************************************************************/
 
-pid_t xfork(const char *file, const int line);
+pid_t _xfork(const char *file, const int line);
+pid_t _xwait(int *status, const char *file, const int line);
 
-pid_t xwait(int *status, const char *file, const int line);
+#define xfork() _xfork(__FILE__, __LINE__)
+#define xwait(status) _xwait(status, __FILE__, __LINE__)

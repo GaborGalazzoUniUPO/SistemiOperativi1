@@ -25,25 +25,25 @@ void esercizio2(const char *filename)
     // apre file in scrittura
     int fd = open(filename, O_RDONLY, 0666);
     if (fd < 0)
-        die("Errore creazione file", __FILE__, __LINE__);
+        die("Errore creazione file");
 
     off_t bytes = lseek(fd, 0, SEEK_END);
     if (bytes < 0)
-        die("ERROR POSITIONING POINTER TO EOF", __FILE__, __LINE__);
+        die("ERROR POSITIONING POINTER TO EOF");
     if (lseek(fd, 0, SEEK_SET) < 0)
-        die("ERROR POSITIONING POINTER TO START", __FILE__, __LINE__);
+        die("ERROR POSITIONING POINTER TO START");
 
     int array[bytes / sizeof(int)];
     ssize_t e0 = read(fd, &array, bytes);
     if (e0 != bytes)
-        die("ERROR READING", __FILE__, __LINE__);
+        die("ERROR READING");
 
     printf("SOMMA: %d\n", somma_array_seq(array, bytes / sizeof(int)));
 
     // chiude file
     int e = close(fd);
     if (e != 0)
-        die("Errore chiusura file", __FILE__, __LINE__);
+        die("Errore chiusura file");
 }
 
 int main(int argc, char *argv[])

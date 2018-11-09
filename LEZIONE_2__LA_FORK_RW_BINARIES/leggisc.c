@@ -13,7 +13,7 @@ void esercizio1(const char *filename)
     // apre file in scrittura
     int fd = open(filename, O_RDONLY, 0666);
     if (fd < 0)
-        die("Errore creazione file", __FILE__, __LINE__);
+        die("Errore creazione file");
 
     int i, acc = 0;
     while (read(fd, &i, sizeof(int)) == sizeof(int))
@@ -27,7 +27,7 @@ void esercizio1(const char *filename)
     // chiude file
     int e = close(fd);
     if (e != 0)
-        die("Errore chiusura file", __FILE__, __LINE__);
+        die("Errore chiusura file");
 }
 
 int main(int argc, char *argv[])
