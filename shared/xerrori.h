@@ -45,6 +45,8 @@ long _xfdim(FILE *stream, const char *file, const int linea);
 
 pid_t _xfork(const char *file, const int line);
 pid_t _xwait(int *status, const char *file, const int line);
+int _xpipe(int pipefd[2], const char *file, const int line) ;
 
 #define xfork() _xfork(__FILE__, __LINE__)
 #define xwait(status) _xwait(status, __FILE__, __LINE__)
+#define xpipe(pipefd) _xpipe(pipefd, __FILE__,__LINE__)

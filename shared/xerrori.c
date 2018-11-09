@@ -18,7 +18,7 @@ void _die(const char *s, const char *file, const int line)
 {
   perror(s);
   print_trace();
-  fprintf(stderr, "(%s,%d)\n", file, line);
+  fprintf(stderr,"== %d == Linea: %d, File: %s\n",getpid(),line,file);
   exit(1);
 }
 
@@ -31,9 +31,7 @@ FILE *_xfopen(const char *pathname, const char *mode, const char *file, const in
   FILE *f = fopen(pathname, mode);
   if (f == NULL)
   {
-    perror("Errore apertura file");
-    fprintf(stderr, "(%s:%d)\n", file, line);
-    exit(1);
+    _die("Errore apertura file", file, line);
   }
   return f;
 }
@@ -120,4 +118,12 @@ pid_t _xwait(int *status, const char *file, const int line)
     _die("ERRORE WAIT", file, line);
   }
   return p;
+}
+
+int _xpipe(int pipefd[2], const char *file, const int line) {
+  int e = pipe(pipefd);
+  if(e!=0) {
+    _die("Errore creazione pipe", file, line); 
+  }
+  return e;
 }
