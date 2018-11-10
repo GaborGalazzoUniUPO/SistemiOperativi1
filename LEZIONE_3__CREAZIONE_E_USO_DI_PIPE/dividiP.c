@@ -52,8 +52,6 @@ int main(int argc, String argv[]){
         perform_action(down_even, strcat(argv[1],".dispari"), down_odd);
     }
     
-    
-
     xclose(down_odd[0]); //NON LEGGO
     xclose(down_even[0]); //NON LEGGO
 
