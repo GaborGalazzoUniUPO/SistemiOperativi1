@@ -44,8 +44,12 @@ long _xfdim(FILE *stream, const char *file, const int linea);
 /***************** SYSCALL ***********************************************************************/
 
 int _xclose(int fd, const char *file, const int linea);
+ssize_t _xread(int fd, void *buf, size_t count, const char *file, const int linea);
+ssize_t _write(int fd, void *buf, size_t count, const char *file, const int linea);
 
 #define xclose(fd) _xclose(fd, __FILE__,__LINE__)
+#define xread(fd, buf, count) _xread(fd, buf, count, __FILE__,__LINE__)
+#define xwrite(fd, buf, count) _write(fd, buf, count, __FILE__,__LINE__)
 
 /*************************************************************************************************/
 /**************************      PROCESS     *****************************************************/

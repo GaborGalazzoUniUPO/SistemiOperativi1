@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
       int end = (i==p-1) ? n1 : n0 + n*(i+1); 
       int tot = cerca(start,end);
       printf("Figlio %d, cerco tra %d e %d, trovati %d \n",i,start,end,tot);
-      ssize_t e = write(up[1],&tot,sizeof(int));
+      ssize_t e = xwrite(up[1],&tot,sizeof(int));
       if(e!=sizeof(int)) die("Errore scrittura pipe");
       close(up[1]);
       exit(0);
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
   close(up[1]);
   while(true) {
     int x;
-    ssize_t e = read(up[0],&x,sizeof(int));
+    ssize_t e = xread(up[0],&x,sizeof(int));
     if(e==0) break;
     tot += x;
   }

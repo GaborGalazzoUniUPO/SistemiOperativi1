@@ -1,4 +1,29 @@
 #include "../shared/xerrori.h"
+#include <string.h>
+
+// Somma pari: 2250 somma dispari: -679
+
+void perform_action(int pipe[2], const String filename, const int usless_pipe[2]){
+    xclose(pipe[1]); //NON SCRIVO
+    xclose(usless_pipe[0]);
+    xclose(usless_pipe[1]);
+    FILE* out = fopen(filename, "wt");
+    int acc = 0;
+    while(true) {
+        int x;
+        ssize_t e = xread(pipe[0],&x,sizeof(int));
+        fprintf(out, "%d\n", x);
+        if(e==0) break;
+         acc += x;
+        
+    } 
+    printf("Somma dei numeri %s letti da %d: %d\n",filename, getpid(), acc);
+
+    //FINITO PROCESSO
+    xfclose(out);
+    xclose(pipe[0]); 
+    exit(EXIT_SUCCESS);
+}
 
 int main(int argc, String argv[]){
     if(argc!=2)
@@ -17,25 +42,29 @@ int main(int argc, String argv[]){
 
     pid_t p_odd = xfork();
     if(p_odd == 0){ //ODD child
-        xclose(down_odd[0]); //NON LEGGO
-
-        xclose(down_odd[1]); //FINITO PROCESSO
-        exit(EXIT_SUCCESS);
+        perform_action(down_odd, strcat(argv[1],".pari"), down_even);
     }
+
+
 
     pid_t p_eve = xfork();
     if(p_eve == 0){ //EVE child
-        xclose(down_even[0]); //NON LEGGO
-
-        xclose(down_even[1]); //FINITO PROCESSO
-        exit(EXIT_SUCCESS);
+        perform_action(down_even, strcat(argv[1],".dispari"), down_odd);
     }
+    
+    
 
-    xclose(down_odd[1]); //NON SCRIVO
-    xclose(down_even[1]); //NON SCRIVO
+    xclose(down_odd[0]); //NON LEGGO
+    xclose(down_even[0]); //NON LEGGO
 
-
-    xclose(down_odd[0]); //FINITO USO PIPE
-    xclose(down_even[0]);
+    int n;
+    //int i = 0;
+    while(fscanf(fp, "%d", &n) != EOF){
+        xwrite(n%2?down_even[1]:down_odd[1], &n, sizeof(int)); 
+        //xwrite(down_odd[1], &n, sizeof(int));
+    }
+    xclose(down_odd[1]); //FINITO
+    xclose(down_even[1]);
     xfclose(fp);
+    exit(EXIT_SUCCESS);
 }

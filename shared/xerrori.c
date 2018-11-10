@@ -110,6 +110,26 @@ int _xclose(int fd, const char *file, const int linea)
   return e;
 }
 
+ssize_t _xread(int fd, void *buf, size_t count, const char *file, const int linea)
+{
+  ssize_t e = read(fd, buf, count);
+  if (e < 0)
+  {
+    _die("Errore read", file, linea);
+  }
+  return e;
+}
+
+ssize_t _write(int fd, void *buf, size_t count, const char *file, const int linea)
+{
+  ssize_t e = write(fd, buf, count);
+  if (e < 0)
+  {
+    _die("Errore write", file, linea);
+  }
+  return e;
+}
+
 /*************************************************************************************************/
 /**************************      THREADS     *****************************************************/
 /*************************************************************************************************/
