@@ -12,9 +12,10 @@ void perform_action(int pipe[2], const String filename, const int usless_pipe[2]
     while(true) {
         int x;
         ssize_t e = xread(pipe[0],&x,sizeof(int));
-        fprintf(out, "%d\n", x);
         if(e==0) break;
-         acc += x;
+        acc += x;
+        fprintf(out, "%d\n", x);
+
         
     } 
     printf("Somma dei numeri %s letti da %d: %d\n",filename, getpid(), acc);
@@ -45,13 +46,11 @@ int main(int argc, String argv[]){
         perform_action(down_odd, strcat(argv[1],".pari"), down_even);
     }
 
-
-
     pid_t p_eve = xfork();
     if(p_eve == 0){ //EVE child
         perform_action(down_even, strcat(argv[1],".dispari"), down_odd);
     }
-    
+
     xclose(down_odd[0]); //NON LEGGO
     xclose(down_even[0]); //NON LEGGO
 
