@@ -120,7 +120,7 @@ ssize_t _xread(int fd, void *buf, size_t count, const char *file, const int line
   return e;
 }
 
-ssize_t _write(int fd, void *buf, size_t count, const char *file, const int linea)
+ssize_t _xwrite(int fd, void *buf, size_t count, const char *file, const int linea)
 {
   ssize_t e = write(fd, buf, count);
   if (e < 0)
