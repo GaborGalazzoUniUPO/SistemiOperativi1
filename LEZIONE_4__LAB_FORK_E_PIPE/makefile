@@ -6,7 +6,7 @@ SHARED_C=$(wildcard ../shared/*.c)
 
 
 # elenco eseguibili
-EXECS=sort_array
+EXECS=sort_array semi_merge_sort
 
 all: $(EXECS)
 
@@ -16,7 +16,7 @@ all: $(EXECS)
 
 # utile per il docente per creare un archvio da mettere su DIR 
 tarfile:
-	tar -zcf lezione.tgz makefile *.c *.h *.py ../shared/*.h ../shared/*.c
+	tar -zcf lezione.tgz makefile *.c *.h *.py $(SHARED_H) $(SHARED_c)
 
 # per quando si vuole ricominciare da zero 
 clean:

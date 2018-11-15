@@ -32,7 +32,7 @@ bool check_sort(int *a, int n)
 #define DEBUG
 
 #ifdef DEBUG
-    #include <assert.h>
+   #include <assert.h>
    int somma(int* array, int n){
        int somma = 0;
        for(int i = 0; i<n; i++)
