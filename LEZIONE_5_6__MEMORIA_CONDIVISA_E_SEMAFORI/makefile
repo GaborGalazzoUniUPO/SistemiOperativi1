@@ -7,7 +7,7 @@ SHARED_C=$(wildcard ../shared/*.c)
 
 
 # elenco eseguibili
-EXECS=contaprimi_shm
+EXECS=contaprimi_shm sort_array
 
 all: $(EXECS)
 
