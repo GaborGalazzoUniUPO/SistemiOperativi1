@@ -11,6 +11,25 @@
 #include <wait.h>
 #include <execinfo.h>
 
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdbool.h>  // gestisce tipo bool (per variabili booleane)
+#include <assert.h>   // permette di usare la funzione assert
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <sys/mman.h>
+#include <sys/stat.h>        /* For mode constants */
+#include <fcntl.h>           /* For O_* constants */
+
+
 /*************************************************************************************************/
 /**************************      UTILS     *******************************************************/
 /*************************************************************************************************/
@@ -62,5 +81,36 @@ int _xpipe(int pipefd[2], const char *file, const int line) ;
 #define xfork() _xfork(__FILE__, __LINE__)
 #define xwait(status) _xwait(status, __FILE__, __LINE__)
 #define xpipe(pipefd) _xpipe(pipefd, __FILE__,__LINE__)
+
+/*************************************************************************************************/
+/**************************  SHARED MEMORY  *****************************************************/
+/*************************************************************************************************/
+
+int _xshm_open(const char *name, int oflag, mode_t mode, int linea, char *file);
+int _xshm_unlink(const char *name, int linea, char *file);
+int _xftruncate(int fd, off_t length, int linea, char *file);
+void* _simple_mmap(size_t length, int fd, int linea, char *file);
+int _xmunmap(void *addr, size_t length, int linea, char *file);
+
+
+#define xshm_open(name, oflag, mode) _xshm_open(name, oflag, mode, __LINE__,__FILE__)
+#define xshm_unlink(name) _xshm_unlink(name, __LINE__,__FILE__)
+#define xftruncate(fd, length) _xftruncate(fd, length, __LINE__,__FILE__)
+#define simple_mmap(length, fd) _simple_mmap(length, fd, __LINE__,__FILE__)
+#define xmunmap(addr, length) _xmunmap(addr, length, __LINE__,__FILE__)
+
+/*************************************************************************************************/
+/**************************  SEMAPHORES *****************************************************/
+/*************************************************************************************************/
+
+
+int _xsem_init(sem_t *sem, int pshared, unsigned int value, int linea, char *file);
+int _xsem_post(sem_t *sem, int linea, char *file);
+int _xsem_wait(sem_t *sem, int linea, char *file);
+
+#define xsem_init(sem, pshared, value) _xsem_init(sem, pshared, value, __LINE__,__FILE__)
+#define xsem_post(sem) _xsem_post(sem, __LINE__,__FILE__) 
+#define xsem_wait(sem) _xsem_wait(sem, __LINE__,__FILE__) 
+
 
 

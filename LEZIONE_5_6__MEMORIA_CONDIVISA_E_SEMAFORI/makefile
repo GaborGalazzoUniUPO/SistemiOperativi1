@@ -7,13 +7,13 @@ SHARED_C=$(wildcard ../shared/*.c)
 
 
 # elenco eseguibili
-EXECS=sort_array semi_merge_sort
+EXECS=contaprimi_shm
 
 all: $(EXECS)
 
 # regola generale per i file oggetto
 %: %.c $(SHARED_H)
-	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(SHARED_C) 
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<  $(SHARED_C) 
 
 # utile per il docente per creare un archvio da mettere su DIR 
 tarfile:

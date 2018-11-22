@@ -161,3 +161,83 @@ int _xpipe(int pipefd[2], const char *file, const int line) {
   }
   return e;
 }
+
+/*************************************************************************************************/
+/**************************  SHARED MEMORY  *****************************************************/
+/*************************************************************************************************/
+
+
+
+int _xshm_open(const char *name, int oflag, mode_t mode, int linea, char *file)
+{
+  int e = shm_open(name, oflag, mode);
+  if(e== -1) {
+    _die("Errore shm_open", file, linea); 
+  }
+  return e;  
+}
+
+int _xshm_unlink(const char *name, int linea, char *file)
+{
+  int e = shm_unlink(name);
+  if(e== -1) {
+    _die("Errore shm_unlink", file, linea); 
+  }
+  return e;  
+}
+
+int _xftruncate(int fd, off_t length, int linea, char *file)
+{
+  int e = ftruncate(fd,length);
+  if(e== -1) {
+    _die("Errore ftruncate", file, linea); 
+  }
+  return e;  
+}
+
+void *_simple_mmap(size_t length, int fd, int linea, char *file)
+{
+  void *a =  mmap(NULL, length ,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
+  if(a == (void *) -1) {
+    _die("Errore mmap", file, linea); 
+  }
+  return a;
+}
+
+int _xmunmap(void *addr, size_t length, int linea, char *file)
+{
+  int e = munmap(addr, length);
+  if(e== -1) {  
+    _die("Errore munmap", file, linea); 
+  }
+  return e;
+}
+
+/*************************************************************************************************/
+/**************************  SEMAPHORES *****************************************************/
+/*************************************************************************************************/
+
+
+int _xsem_init(sem_t *sem, int pshared, unsigned int value, int linea, char *file) {
+  int e = sem_init(sem,pshared,value);
+  if (e!=0) {
+    _die("Errore sem_init", file, linea);
+  }
+  return e;
+}
+
+int _xsem_post(sem_t *sem, int linea, char *file) {
+  int e = sem_post(sem);
+  if (e!=0) {
+    _die("Errore sem_post", file, linea);
+  }
+  return e;
+}
+
+int _xsem_wait(sem_t *sem, int linea, char *file) {
+  int e = sem_wait(sem);
+  if (e!=0) {
+    _die("Errore sem_wait", file, linea);
+  }
+  return e;
+}
