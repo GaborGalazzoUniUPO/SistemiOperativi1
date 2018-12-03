@@ -18,6 +18,12 @@ typedef struct
 int *random_array(int n);
 int massimo(int *a, int n, int p);
 
+void parray(int* a, int n){
+    for(int i = 0; i<n; i++)
+        printf("%d ", a[i]);
+    putchar('\n');
+}
+
 // main
 int main(int argc, char **argv)
 {
@@ -55,7 +61,6 @@ tbody(void *args)
     for (int i = 1; i < targs->size; i++)
         if (targs->a[i] > targs->max)
             targs->max = targs->a[i];
-    printf("%d\n", targs->max);
     pthread_exit(NULL); 
 }
 
@@ -71,7 +76,7 @@ int massimo(int *a, int n, int p)
         targs[i].a = a + (i * (n / p));
         targs[i].size = n / p;
 
-        int e = pthread_create(threads + i, NULL, tbody, targs);
+        int e = pthread_create(threads + i, NULL, tbody, targs + i);
         if (e < 0)
         {
             perror("ERRORE PTHREAD CREATE");
@@ -81,15 +86,15 @@ int massimo(int *a, int n, int p)
     int max = a[0];
     for (int i = 0; i < p; i++)
     {
-        int e = pthread_join(threads[p], NULL);
+        int e = pthread_join(threads[i], NULL);
         if (e < 0)
         {
             perror("ERRORE PTHREAD JOIN");
             exit(1);
         }
-        if (targs[p].max > max)
+        if (targs[i].max > max)
         {
-            max = targs[p].max ;
+            max = targs[i].max ;
         }
     }
     return max;
