@@ -46,25 +46,50 @@ int intcmp(const void *a, const void *b)
   return *((int *) a) - *((int *) b);
 }
 
+typedef struct {
+    int* a;
+    int p;
+    int r; 
+    int limite;
+
+} targs_t;
+
+void mt_qsort(int a[], int p, int r, int limite);
+
+void* tbody(void* gargs){
+
+    targs_t* args = (targs_t*) gargs;
+    mt_qsort(args->a, args->p, args->r, args->limite);
+    return NULL;
+}
+
 
 // ordina gli elementi a[p] ... a[r]
 void mt_qsort(int a[], int p, int r, int limite)
 {
    if(r-p+1<=limite) {
      // caso base usa la funzione di libreria qsort
-     qsort(a,r-p+1,sizeof(int),intcmp);
+     qsort(a+p,r-p+1,sizeof(int),intcmp);
     }
     else {
       // invoca la procedura partition per mettere in 
       // a[p] ... a[q] gli elementi "piccoli" e in a[q+1]...a[r] gli elementi "grandi" 
-      int pivot = partition(a, p, r);
+      int q = partition(a, p, r);
       // in parallelo  
       //    invoca mt_qsort(a,p,q,limite)
       pthread_t* pthread = malloc(sizeof(pthread_t));
+      targs_t* targs = malloc(sizeof(targs_t));
+      targs->a = a;
+      targs->p = p;
+      targs->r = q;
+      targs->limite = limite;
+      xpthread_create(pthread, NULL, tbody, targs);
 
       //invoca mt_qsort(a,q+1,r,limite)
       mt_qsort(a,q+1,r,limite);
       xpthread_join(*pthread, NULL);
+      free(pthread);
+      free(targs);
 
     }
 } 
@@ -101,6 +126,7 @@ int somma_array(int a[], int n)
 
 int main(int argc, char *argv[])
 {
+    srand(time(NULL));
   int n, limite;
 
   if((argc<2)||(argc>3)) {
