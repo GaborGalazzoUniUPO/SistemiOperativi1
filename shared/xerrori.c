@@ -241,3 +241,50 @@ int _xsem_wait(sem_t *sem, int linea, char *file) {
   }
   return e;
 }
+
+
+/*************************************************************************************************/
+/**************************  THREADS *************************************************************/
+/*************************************************************************************************/
+
+
+
+// ----- thread (non scrivono il codice d'errore in errno)
+#define Buflen 100
+#define Attesa 5 
+
+// stampa il messaggio d'errore associato al codice en in maniera simile a perror
+void _xperror(int en, char *msg) {
+  char buf[Buflen];
+  
+  char *errmsg = strerror_r(en, buf, Buflen);
+  if(msg!=NULL)
+    fprintf(stderr,"%s: %s\n",msg, errmsg);
+  else
+    fprintf(stderr,"%s\n",errmsg);
+}
+
+
+int _xpthread_create(pthread_t *thread, const pthread_attr_t *attr,
+                          void *(*start_routine) (void *), void *arg, int linea, char *file) {
+  int e = pthread_create(thread, attr, start_routine, arg);
+  if (e!=0) {
+    _xperror(e, "Errore pthread_create");
+    fprintf(stderr,"== %d == Linea: %d, File: %s\n",getpid(),linea,file);
+    sleep(Attesa);  // si mette in attesa per non terminare subito gli altri thread 
+    exit(1);
+  }
+  return e;                       
+}
+
+                          
+int _xpthread_join(pthread_t thread, void **retval, int linea, char *file) {
+  int e = pthread_join(thread, retval);
+  if (e!=0) {
+    _xperror(e, "Errore pthread_join");
+    fprintf(stderr,"== %d == Linea: %d, File: %s\n",getpid(),linea,file);
+    sleep(Attesa);  // si mette in attesa per non terminare subito gli altri thread 
+    exit(1);
+  }
+  return e;
+}

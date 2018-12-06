@@ -113,4 +113,18 @@ int _xsem_wait(sem_t *sem, int linea, char *file);
 #define xsem_wait(sem) _xsem_wait(sem, __LINE__,__FILE__) 
 
 
+/*************************************************************************************************/
+/**************************  THREADS *************************************************************/
+/*************************************************************************************************/
+
+
+void _xperror(int en, char *msg);
+int _xpthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg, int linea, char *file);
+int _xpthread_join(pthread_t thread, void **retval, int linea, char *file);
+
+#define xperror(en, msg) _xperror(en, msg, __LINE__, __FILE__)
+#define xpthread_create(thread, attr, start_routine, arg) _xpthread_create(thread, attr, start_routine, arg, __LINE__,__FILE__)
+#define xpthread_join(thread, retval) _xpthread_join(thread, retval, __LINE__, __FILE__)
+
+
 
