@@ -1,19 +1,19 @@
 # definizione variabili
-CFLAGS=-Wall -O -g -std=c99
-CC=gcc
+CFLAGS=-Wall -std=c99 -g -O
 LDFLAGS=-pthread -lrt
+CC=gcc
 SHARED_H=$(wildcard ../shared/*.h)
 SHARED_C=$(wildcard ../shared/*.c)
 
 
 # elenco eseguibili
-EXECS=contaprimi_pthreads
+EXECS=incompleto convertiT
 
 all: $(EXECS)
 
 # regola generale per i file oggetto
 %: %.c $(SHARED_H)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< 
+	$(CC) $(CFLAGS) -o $@ $<  $(SHARED_C)  $(LDFLAGS)
 
 # utile per il docente per creare un archvio da mettere su DIR 
 tarfile:

@@ -4,22 +4,12 @@
 /**************************      UTILS     *******************************************************/
 /*************************************************************************************************/
 
-void print_trace(void)
-{
-  void *buffer[200];
-  int n;
-
-  n = backtrace(buffer, 200);
-  fprintf(stderr, "--- (depth %d) ---\n", n);
-  backtrace_symbols_fd(buffer, n, STDERR_FILENO);
-}
 
 void _die(const char *s, const char *file, const int line)
 {
   printf("\033[0;31m"); 
   perror(s);
   fprintf(stderr,"== %d == Linea: %d, File: %s\n",getpid(),line,file);
-  print_trace();
   printf("\033[0m");
   exit(1);
 }
