@@ -278,3 +278,24 @@ int _xpthread_join(pthread_t thread, void **retval, int linea, char *file) {
   }
   return e;
 }
+
+// mutex 
+int _xpthread_mutex_init(pthread_mutex_t *restrict mutex, const pthread_mutexattr_t *restrict attr, int linea, char *file) {
+  int e = pthread_mutex_init(mutex, attr);
+  if (e!=0) {
+    _xperror(e, "Errore pthread_mutex_init");
+    fprintf(stderr,"== %d == Linea: %d, File: %s\n",getpid(),linea,file);
+    exit(1);
+  }  
+  return e;
+}
+
+int _xpthread_mutex_destroy(pthread_mutex_t *mutex, int linea, char *file) {
+  int e = pthread_mutex_destroy(mutex);
+  if (e!=0) {
+    _xperror(e, "Errore pthread_mutex_destroy");
+    fprintf(stderr,"== %d == Linea: %d, File: %s\n",getpid(),linea,file);
+    exit(1);
+  }
+  return e;
+}

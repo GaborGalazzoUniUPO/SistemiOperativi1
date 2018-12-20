@@ -114,4 +114,9 @@ int _xpthread_join(pthread_t thread, void **retval, int linea, char *file);
 #define xpthread_join(thread, retval) _xpthread_join(thread, retval, __LINE__, __FILE__)
 
 
+// mutex 
+int _xpthread_mutex_init(pthread_mutex_t *restrict mutex, const pthread_mutexattr_t *restrict attr, int linea, char *file);
+int _xpthread_mutex_destroy(pthread_mutex_t *mutex, int linea, char *file);
 
+#define xpthread_mutex_init(mutex,attr) xpthread_mutex_init(mutex,attr, __LINE__,__FILE__) 
+#define xpthread_mutex_destroy(mutex) _xpthread_mutex_destroy(mutex, __LINE__,__FILE__) 
