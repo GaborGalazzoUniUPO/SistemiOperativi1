@@ -11,12 +11,15 @@ LDFLAGS=-pthread -lrt
 CC=gcc
 
 # eseguibili da creare
-EXECS=qsort
+EXECS=qsort vqsort
 
 all: $(EXECS)
 
 # regole per gli eseguibili
 qsort: qsort.o  xerrors.o
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+vqsort: vqsort.o  xerrors.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 
