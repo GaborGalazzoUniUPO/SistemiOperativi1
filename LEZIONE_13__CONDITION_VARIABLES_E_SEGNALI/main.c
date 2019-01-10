@@ -110,7 +110,7 @@ int main(int argc, char* argv[]){
     sigaction(SIGUSR2,&sa,NULL);  // handler per USR2
 
     printf("PID: %d\n", getpid());
-    while(true);
+    pause();
 
     return 0;
 }
