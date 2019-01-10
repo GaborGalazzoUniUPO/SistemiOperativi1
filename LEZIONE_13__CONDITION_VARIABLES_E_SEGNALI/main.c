@@ -22,30 +22,30 @@ void heap_init(heap_t *h, int maxSize){
 }
 
 int heap_alloc(heap_t *h, int size){
-    printf("%d sta cercando di ottenere il mutex per allocare\n", getpid());
+    printf("%ld sta cercando di ottenere il mutex per allocare\n", pthread_self());
     pthread_mutex_lock(&(h->mutex));
-    printf("%d ha ottenuto il mutex per allocare\n", getpid());
+    printf("%ld ha ottenuto il mutex per allocare\n", pthread_self());
     while (h->bytesLeft < size)
     {
-        printf("%d aspetta ce ci sia lo spazio\n", getpid());
+        printf("%ld aspetta ce ci sia lo spazio\n", pthread_self());
         pthread_cond_wait(&(h->cond), &(h->mutex));  
     }
-    printf("%d alloca %d\n", getpid(), size);
+    printf("%ld alloca %d\n", pthread_self(), size);
     h->bytesLeft -= size;   
-    printf("%d rilascia il mutex per allocare\n", getpid());            
+    printf("%ld rilascia il mutex per allocare\n", pthread_self());            
     pthread_mutex_unlock(&(h->mutex));
     
     return 1;
 }
 
 void heap_dealloc(heap_t *h, int size) {
-  printf("%d sta cercando di ottenere il mutex per deallocare\n", getpid());
+  printf("%ld sta cercando di ottenere il mutex per deallocare\n", pthread_self());
   pthread_mutex_lock(&(h->mutex));
-  printf("%d ha ottenuto il mutex per deallocare\n", getpid());
+  printf("%ld ha ottenuto il mutex per deallocare\n", pthread_self());
   h->bytesLeft += size;    
-  printf("%d ha restituito %d bytes e sveglia tutti\n", getpid(), size);  
+  printf("%ld ha restituito %d bytes e sveglia tutti\n", pthread_self(), size);  
   pthread_cond_broadcast(&(h->cond));  
-   printf("%d rilascia il mutex per deallocare\n", getpid());         
+   printf("%ld rilascia il mutex per deallocare\n", pthread_self());         
   pthread_mutex_unlock(&(h->mutex));    
 }
 
@@ -57,13 +57,13 @@ typedef struct {
 
 void * usr1t_body(void * args){
     a_usr1_t* ausr1 = (a_usr1_t*) args;
-    printf("Ciao sono %d!\n", getpid());
+    printf("Ciao sono %ld!\n", pthread_self());
     heap_alloc(ausr1->heap, ausr1->mem);
-    printf("%d ha finito di allocare e va a dormire per %d sec\n", getpid(), ausr1->sec);            
+    printf("%ld ha finito di allocare e va a dormire per %d sec\n", pthread_self(), ausr1->sec);            
     sleep(ausr1->sec);
-    printf("%d si è svegliato\n", getpid());
+    printf("%ld si è svegliato\n", pthread_self());
     heap_dealloc(ausr1->heap, ausr1->mem);
-     printf("Ciao sono %d! E sono morto!\n", getpid());
+     printf("Ciao sono %ld! E sono morto!\n", pthread_self());
     return NULL;
 }
 
