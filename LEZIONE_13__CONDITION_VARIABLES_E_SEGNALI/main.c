@@ -63,7 +63,8 @@ void * usr1t_body(void * args){
     sleep(ausr1->sec);
     printf("%ld si è svegliato\n", pthread_self());
     heap_dealloc(ausr1->heap, ausr1->mem);
-     printf("Ciao sono %ld! E sono morto!\n", pthread_self());
+    printf("Ciao sono %ld! E sono morto!\n", pthread_self());
+    free(args);
     return NULL;
 }
 
@@ -74,21 +75,25 @@ void handler(int s)
       printf("Dimensione HEAP: %d\n", heap->bytesLeft);
   } 
   if(s==SIGUSR1) {
-    a_usr1_t args;
+    a_usr1_t* args = (a_usr1_t*) malloc(sizeof(a_usr1_t));
     pthread_t t;
     printf("MEM: ");
-    scanf("%d", &(args.mem));
-    assert(args.mem > 0);
+    scanf("%d", &(args->mem));
+    assert(args->mem > 0);
 
     printf("SEC: ");
-    scanf("%d", &(args.sec));
-    assert(args.sec > 0);
+    scanf("%d", &(args->sec));
+    assert(args->sec > 0);
 
-    args.heap = heap;
+    args->heap = heap;
 
-    xpthread_create(&t, NULL, usr1t_body, &args,__LINE__,__FILE__);
+    xpthread_create(&t, NULL, usr1t_body, args,__LINE__,__FILE__);
 
   } 
+  if(s==SIGINT){
+    free(heap);
+    exit(EXIT_SUCCESS);
+  }
 }
 
 #define MAX_BYTES 10000000
@@ -108,12 +113,11 @@ int main(int argc, char* argv[]){
 
     sigaction(SIGUSR1,&sa,NULL);  // handler per USR1
     sigaction(SIGUSR2,&sa,NULL);  // handler per USR2
+    sigaction(SIGINT,&sa,NULL); 
 
     printf("PID: %d\n", getpid());
     while(true)
         pause();
     
-    free(heap);
-
     return 0;
 }
